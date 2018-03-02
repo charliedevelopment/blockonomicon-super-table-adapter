@@ -1,0 +1,46 @@
+{
+	"name": "charliedev/blockonomicon-super-table-adapter",
+	"description": "Blockonomicon adapter for Super Table fields.",
+	"type": "craft-plugin",
+	"version": "0.0.1",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Charlie Development",
+			"email": "support@charliedev.com",
+			"homepage": "http://charliedev.com/"
+		}
+	],
+	"keywords": [
+		"craft",
+		"cms",
+		"craftcms",
+		"matrix",
+		"export",
+		"import",
+		"templating"
+	],
+	"support": {
+		"issues": "https://github.com/charliedevelopment/craft3-blockonomicon-super-table-adapter/issues?state=open",
+		"source": "https://github.com/charliedevelopment/craft3-blockonomicon-super-table-adapter",
+		"email": "support@charliedev.com"
+	},
+	"require": {
+		"craftcms/cms": "^3.0.0-RC1"
+	},
+	"autoload": {
+		"psr-4": {
+			"charliedev\\blockonomicon\\adapters\\": "src/"
+		}
+	},
+	"extra": {
+		"name": "Blockonomicon Super Table Adapter",
+		"handle": "blockonomicon-super-table-adapter",
+		"changelogUrl": "https://raw.githubusercontent.com/charliedevelopment/craft3-blockonomicon-super-table-adapter/master/CHANGELOG.md",
+		"downloadUrl": "https://github.com/charliedevelopment/craft3-blockonomicon-super-table-adapter/archive/master.zip",
+		"schemaVersion": "0.0.1",
+		"hasCpSettings": true,
+		"hasCpSection": true,
+		"class": "charliedev\\blockonomicon\\adapters\\SuperTableField"
+	}
+}
