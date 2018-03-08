@@ -1,6 +1,6 @@
 <div class="indent">
 	{% for fieldcontrol in blockControls %}
-		<h3>{{ fieldcontrol.name | t('site') }}<span class="light"> (within Super Table)</span></h3>
+		<h3>{{ fieldcontrol.name | t('site') }}<span class="light"> (field within {{ fieldcontrol.table | t('site') }})</span></h3>
 		{{ fieldcontrol.control | raw }}
 	{% endfor %}
 </div>

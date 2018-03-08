@@ -60,7 +60,44 @@ class SuperTableField extends Plugin
 					return;
 				}
 
-				// TODO
+				// Find/generate block ID.
+				$blockid = 'new';
+				if ($event->field) {
+					$blockid = $event->field->getBlockTypes()[0]->id; // Super tables have only one block type.
+				}
+
+				// Create a list of existing fields, keyed by handle, if possible.
+				$currentfields = [];
+				if ($event->field) {
+					$currentfields = array_reduce($event->field->getBlockTypeFields(), function($value, $item) {
+						$value[$item->handle] = $item;
+						return $value;
+					}, []);
+				}
+
+				// Match block fields to settings fields, reusing ids when possible.
+				$fields = [];
+				foreach ($event->settings['typesettings']['fields'] as $field) {
+					$currentfield = $currentfields[$field['handle']] ?? null;
+
+					// Send off event to update inner field settings.
+					$secondaryevent = new LoadFieldEvent();
+					$secondaryevent->field = $currentfield;
+					$secondaryevent->importoptions = $event->importoptions[$field['handle']] ?? null; // Get available import options for the subfield, if possible.
+					$secondaryevent->settings = $field;
+					Blockonomicon::getInstance()->trigger(Blockonomicon::EVENT_LOAD_FIELD, $secondaryevent);
+					if ($currentfield) {
+						$fields[$currentfield->id] = $secondaryevent->settings;
+					} else {
+						$fields['new' . (count($fields) + 1)] = $secondaryevent->settings;
+					}
+				}
+
+				// Add inner fields to the settings being used.
+				unset($event->settings['typesettings']['fields']);
+				$event->settings['typesettings']['blocktypes'] = [];
+				$event->settings['typesettings']['blocktypes'][$blockid] = [];
+				$event->settings['typesettings']['blocktypes'][$blockid]['fields'] = $fields;
 			}
 		);
 
@@ -79,12 +116,13 @@ class SuperTableField extends Plugin
 				$blockcontrols = [];
 				foreach ($event->settings['typesettings']['fields'] as $field) {
 					$secondaryevent = new RenderImportControlsEvent();
-					$secondaryevent->handle = $event->handle;
+					$secondaryevent->handle = $event->handle . '[' . $field['handle'] . ']';
 					$secondaryevent->cachedoptions = $event->cachedoptions[$field['handle']] ?? null; // Get cached options for the subfield, if possible.
 					$secondaryevent->settings = $field;
 					Blockonomicon::getInstance()->trigger(Blockonomicon::EVENT_RENDER_IMPORT_CONTROLS, $secondaryevent);
 					if (!empty($secondaryevent->controls)) {
 						$blockcontrols[] = [
+							'table' => $event->settings['name'],
 							'handle' => $field['handle'],
 							'name' => $field['name'],
 							'control' => $secondaryevent->controls,
