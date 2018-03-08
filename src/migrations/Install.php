@@ -20,7 +20,7 @@ class Install extends Migration
 	public function safeUp()
 	{
 		// Prevent installation if Blockonomicon is not installed as well.
-		return Craft::$app->getPlugin('blockonomicon') != null;
+		return Craft::$app->getPlugins()->getPlugin('blockonomicon') != null;
 	}
 
 	/**
