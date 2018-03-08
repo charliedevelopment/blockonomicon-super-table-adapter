@@ -4,13 +4,10 @@
  * @copyright Copyright Charlie Development
  */
 
-namespace charliedev\blockonomicon\migrations;
-
-use charliedev\blockonomicon\Blockonomicon;
+namespace charliedev\blockonomicon\adapters\supertable\migrations;
 
 use Craft;
 use craft\db\Migration;
-use craft\helpers\FileHelper;
 
 /**
  * Install migration.

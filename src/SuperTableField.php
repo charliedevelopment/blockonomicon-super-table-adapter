@@ -4,7 +4,7 @@
  * @copyright Copyright Charlie Development
  */
 
-namespace charliedev\blockonomicon\adapters;
+namespace charliedev\blockonomicon\adapters\supertable;
 
 use charliedev\blockonomicon\Blockonomicon;
 use charliedev\blockonomicon\events\RenderImportControlsEvent;

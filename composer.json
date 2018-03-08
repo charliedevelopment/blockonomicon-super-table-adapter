@@ -31,7 +31,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"charliedev\\blockonomicon\\adapters\\": "src/"
+			"charliedev\\blockonomicon\\adapters\\supertable\\": "src/"
 		}
 	},
 	"extra": {
@@ -42,6 +42,6 @@
 		"schemaVersion": "0.0.1",
 		"hasCpSettings": true,
 		"hasCpSection": true,
-		"class": "charliedev\\blockonomicon\\adapters\\SuperTableField"
+		"class": "charliedev\\blockonomicon\\adapters\\supertable\\SuperTableField"
 	}
 }
