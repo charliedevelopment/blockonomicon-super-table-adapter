@@ -69,7 +69,7 @@ class SuperTableField extends Plugin
 				// Create a list of existing fields, keyed by handle, if possible.
 				$currentfields = [];
 				if ($event->field) {
-					$currentfields = array_reduce($event->field->getBlockTypeFields(), function($value, $item) {
+					$currentfields = array_reduce($event->field->getBlockTypeFields(), function ($value, $item) {
 						$value[$item->handle] = $item;
 						return $value;
 					}, []);
