@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<defs>
+		<style>
+			.red {
+				fill: #da513d;
+			}
+		</style>
+	</defs>
+	<rect class="red" x="8" y="11.5" width="8" height="1"/>
+	<rect class="red" x="9" y="9.5" width="6" height="1"/>
+	<rect class="red" x="10" y="7.5" width="4" height="1"/>
+	<path class="red" d="M5.5,2.5V21.8086l6.5-3.25,6.5,3.25V2.5Zm12,17.6914-5.5-2.75-5.5,2.75V3.5h11Z"/>
+</svg>
