@@ -12,6 +12,7 @@ use charliedev\blockonomicon\events\SaveFieldEvent;
 use charliedev\blockonomicon\events\LoadFieldEvent;
 
 use Craft;
+use craft\base\Plugin;
 
 use yii\base\Event;
 
@@ -20,12 +21,13 @@ use yii\base\Event;
  * Exports data about inner fields of a Super Table field, and will provide existing field IDs
  * to imported data, in an attempt to save data when re-importing over existing data.
  */
-class SuperTableField
+class SuperTableField extends Plugin
 {
 	/**
-	 * Binds to necessary event handlers.
+	 * @inheritdoc
+	 * @see craft\base\Plugin
 	 */
-	public static function setup()
+	public function init()
 	{
 		// On export, gather inner field data and attach to the event.
 		Event::on(
@@ -39,6 +41,11 @@ class SuperTableField
 				}
 
 				$event->settings['typesettings']['fields'] = [];
+
+				foreach ($event->field->getBlockTypeFields() as $field) {
+					$fielddata = Blockonomicon::getInstance()->blocks->getFieldData($field);
+					$event->settings['typesettings']['fields'][] = $fielddata;
+				}
 			}
 		);
 
@@ -47,18 +54,59 @@ class SuperTableField
 			Blockonomicon::class,
 			Blockonomicon::EVENT_LOAD_FIELD,
 			function (LoadFieldEvent $event) {
-				
+
 				// Ignore any fields that are not Super Table fields.
 				if ($event->settings['type'] != \verbb\supertable\fields\SuperTableField::class) {
 					return;
 				}
 
-				if ($event->field == null) {
+				// TODO
+			}
+		);
+
+		// Generate controls to set data stripped on block export.
+		Event::on(
+			Blockonomicon::class,
+			Blockonomicon::EVENT_RENDER_IMPORT_CONTROLS,
+			function (RenderImportControlsEvent $event) {
+
+				// Ignore any fields that are not Assets fields.
+				if ($event->settings['type'] != \verbb\supertable\fields\SuperTableField::class) {
 					return;
 				}
 
-				
+				// Gather possible controls for each inner field.
+				$blockcontrols = [];
+				foreach ($event->settings['typesettings']['fields'] as $field) {
+					$secondaryevent = new RenderImportControlsEvent();
+					$secondaryevent->handle = $event->handle;
+					$secondaryevent->cachedoptions = $event->cachedoptions[$field['handle']] ?? null; // Get cached options for the subfield, if possible.
+					$secondaryevent->settings = $field;
+					Blockonomicon::getInstance()->trigger(Blockonomicon::EVENT_RENDER_IMPORT_CONTROLS, $secondaryevent);
+					if (!empty($secondaryevent->controls)) {
+						$blockcontrols[] = [
+							'handle' => $field['handle'],
+							'name' => $field['name'],
+							'control' => $secondaryevent->controls,
+						];
+					}
+				}
+
+				// No controls, don't add them to the event.
+				if (count($blockcontrols) == 0) {
+					return;
+				}
+
+				$event->controls = Craft::$app->getView()->renderTemplate('blockonomicon-super-table-adapter/Adapter.html', [
+					'safeHandle' => implode('_', preg_split('/[\[\]]+/', $event->handle, -1, PREG_SPLIT_NO_EMPTY)),
+					'blockHandle' => $event->handle,
+					'settings' => $event->settings,
+					'cachedOptions' => $event->cachedoptions,
+					'blockControls' => $blockcontrols,
+				]);
 			}
 		);
+
+		parent::init();
 	}
 }
