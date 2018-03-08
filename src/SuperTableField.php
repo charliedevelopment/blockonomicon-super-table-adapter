@@ -1,6 +1,6 @@
 <?php
 /**
- * Blockonomicon plugin for Craft 3.0
+ * Blockonomicon Super Table Adapter plugin for Craft 3.0
  * @copyright Copyright Charlie Development
  */
 
