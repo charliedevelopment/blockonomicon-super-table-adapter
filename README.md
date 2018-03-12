@@ -1,3 +1,5 @@
+![Blockonomicon Super Table Adapter](./resources/blockonomicon-super-table-adapter.png)
+
 # Blockonomicon: Super Table Adapter
 
 This plugin acts as an extension to [Blockonomicon](https://github.com/charliedevelopment/craft3-blockonomicon), adding support for the [Super Table](https://github.com/verbb/super-table/) field.
