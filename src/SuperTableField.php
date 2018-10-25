@@ -116,7 +116,8 @@ class SuperTableField extends Plugin
 				$blockcontrols = [];
 				foreach ($event->settings['typesettings']['fields'] as $field) {
 					$secondaryevent = new RenderImportControlsEvent();
-					$secondaryevent->handle = $event->handle . '[' . $field['handle'] . ']';
+					$secondaryevent->blockHandle = $event->blockHandle; // Keep the base imported block handle.
+					$secondaryevent->handle = $event->handle . '[' . $field['handle'] . ']'; // Nest the imported field handle within the base handle.
 					$secondaryevent->cachedoptions = $event->cachedoptions[$field['handle']] ?? null; // Get cached options for the subfield, if possible.
 					$secondaryevent->settings = $field;
 					Blockonomicon::getInstance()->trigger(Blockonomicon::EVENT_RENDER_IMPORT_CONTROLS, $secondaryevent);
@@ -136,8 +137,8 @@ class SuperTableField extends Plugin
 				}
 
 				$event->controls = Craft::$app->getView()->renderTemplate('blockonomicon-super-table-adapter/Adapter.html', [
-					'safeHandle' => implode('_', preg_split('/[\[\]]+/', $event->handle, -1, PREG_SPLIT_NO_EMPTY)),
-					'blockHandle' => $event->handle,
+					'safeHandle' => $event->blockHandle . '_' . implode('_', preg_split('/[\[\]]+/', $event->handle, -1, PREG_SPLIT_NO_EMPTY)),
+					'fieldHandle' => $event->handle,
 					'settings' => $event->settings,
 					'cachedOptions' => $event->cachedoptions,
 					'blockControls' => $blockcontrols,
