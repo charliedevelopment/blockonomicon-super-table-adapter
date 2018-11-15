@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.0.1 - 2018-11-15
+
 ### Added
 - Import configuration mechanism has been extended to provide the handle of the block being imported, to help ensure proper unique IDs for import controls.
 

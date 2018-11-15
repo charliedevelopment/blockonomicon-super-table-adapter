@@ -2,7 +2,7 @@
 	"name": "charliedev/blockonomicon-super-table-adapter",
 	"description": "Blockonomicon adapter for Super Table fields.",
 	"type": "craft-plugin",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"authors": [
 		{
