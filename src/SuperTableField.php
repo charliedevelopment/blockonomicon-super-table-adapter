@@ -40,6 +40,9 @@ class SuperTableField extends Plugin
 					return;
 				}
 
+				// Remove any explicitly defined content table, it can be figured out/generated from the handle.
+				unset($event->settings['typesettings']['contentTable']);
+
 				$event->settings['typesettings']['fields'] = [];
 
 				foreach ($event->field->getBlockTypeFields() as $field) {
@@ -59,6 +62,9 @@ class SuperTableField extends Plugin
 				if ($event->settings['type'] != \verbb\supertable\fields\SuperTableField::class) {
 					return;
 				}
+
+				// Remove any explicitly defined content table, it can be figured out/generated from the handle.
+				unset($event->settings['typesettings']['contentTable']);
 
 				// Find/generate block ID.
 				$blockid = 'new';
